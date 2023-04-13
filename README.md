@@ -2,14 +2,15 @@
 
 AI Chatbot是一个由OpenAI驱动的聊天软件，它可以通过Voicevox与用户进行语音交互。
 
-
 ### 要求
+
 - Python 3.8或更高版本及其依赖包
+- Git (可选)
 - OpenAI API密钥
 - Voicevox引擎
 
 ### 安装
-1. 克隆存储库：
+1. 克隆存储库或者[下载zip](https://github.com/skygongque/tts/archive/refs/heads/main.zip)：
 ```bash
 git clone https://github.com/Inupedia/AI-Chatbot.git
 ```
@@ -36,3 +37,13 @@ pip install -r requirements.txt
 python main.py
 ```
 
+### 补充说明
+1. 如果想搭建bilibili直播聊天机器人, 可以参考[这里](https://github.com/XzaiCloud/AI-Vtuber-Kun)
+2. vtuber运行角色皮肤需要用到[Vtube Studio](https://denchisoft.com/)
+3. 如果需要将音频信号从一个应用程序传递到另一个应用程序或系统组件，可以使用[Virtual Audio Cable](https://vb-audio.com/Cable/)
+   
+### 免责声明
+本项目仅供学习交流使用，不得用于商业用途，否则后果自负。
+
+### License
+[MIT](https://choosealicense.com/licenses/mit/)
