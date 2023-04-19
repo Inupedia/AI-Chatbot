@@ -1,7 +1,7 @@
 {
   "chat_mode": "text",
   "openai": {
-    "api_key": "your_chatgpt_api_key"
+    "api_key": "YOUR_API_KEY"
   },
   "chatgpt": {
     "model": "gpt-3.5-turbo",
@@ -23,5 +23,8 @@
     "endpoint": "http://localhost:50021",
     "output_filename": "voicevox.wav",
     "speaker_id": 20
-  }
+  },
+  "username": "百科狗",
+  "queue_size": 10,
+  "room_id": 3782242
 }

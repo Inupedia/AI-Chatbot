@@ -14,7 +14,7 @@ class Voice():
         self.filename = config_data["output_filename"]
         self.character_id = config_data["speaker_id"]
 
-    def voicevox_tts(self, text: str) -> None:
+    def voicevox_tts(self, text: str):
 
         # initial request with text
         params_encoded = urlencode(

@@ -3,3 +3,4 @@ pyaudio
 pydub
 keyboard
 googletrans==4.0.0rc1
+bilibili-api
