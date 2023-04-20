@@ -12,6 +12,7 @@ from module.audio import AudioRecorder
 from module.voicevox import Voice
 from module.chatgpt import ChatGPT
 from module.bilibili import BilibiliLive
+from module.whisper import SpeechToText
 
 
 class AIVtuber():
@@ -42,6 +43,9 @@ class AIVtuber():
 
         # add the chatgpt session to the list
         AIVtuber.chatgpt_sessions.append(self.chatgpt_session)
+
+        # initialize the speech to text translator
+        self.whisper_stt = SpeechToText()
 
         # initialize the translator
         self.translator = Translator()
@@ -135,9 +139,8 @@ class AIVtuber():
 
     def speech_to_text(self, audio_file: str) -> str:
         try:
-            audio_file = open(audio_file, "rb")
-            transcript = openai.Audio.transcribe("whisper-1", audio_file)
-            return transcript.text
+            text = self.whisper_stt.transcribe(audio_file)
+            return text
         except Exception as e:
             return f"Error: {e}"
 
