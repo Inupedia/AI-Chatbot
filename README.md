@@ -11,13 +11,13 @@ AI Chatbot是一个由OpenAI驱动的聊天软件，它可以通过Voicevox与�
 
 ### 安装
 1. 克隆存储库或者[下载zip](https://github.com/skygongque/tts/archive/refs/heads/main.zip)：
-```bash
-git clone https://github.com/Inupedia/AI-Chatbot.git
-```
+   ```bash
+   git clone https://github.com/Inupedia/AI-Chatbot.git
+   ```
 2. 安装所需的软件包：
-```bash
-pip install -r requirements.txt 
-```
+   ```bash
+   pip install -r requirements.txt 
+   ```
 
 3. 下载VoiceVox引擎并运行：
    1. [官方软件](https://voicevox.hiroshiba.jp/)
@@ -35,11 +35,12 @@ pip install -r requirements.txt
    7. `username`: 用户名, 仅在`voice`和`text`模式下有效
    8. `queue_size`: 能最大存储消息队列大小, 仅在`live`和`text`模式下有效。为保持记录最新，当消息队列达到最大值时，会自动清空早期1/2的消息
    9. `room_id`: 直播间ID，如`https://live.bilibili.com/123456`中的`123456`
+   10. `proxy`: 免翻墙代理，如需使用代理，请将`proxy`设置为`true`并在`base`中填写代理地址。默认代理地址参考[此处](https://github.com/justjavac/openai-proxy.git)
    
 2. 运行程序 (首先运行Voicevox)：
-```bash
-python main.py
-```
+   ```bash
+   python main.py
+   ```
 
 ### 补充说明
 1. vtuber运行角色皮肤需要用到[Vtube Studio](https://denchisoft.com/)

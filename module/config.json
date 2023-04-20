@@ -26,5 +26,9 @@
   },
   "username": "百科狗",
   "queue_size": 10,
-  "room_id": 0
+  "room_id": 0,
+  "proxy": {
+    "enabled": false,
+    "host": "https://closeai.deno.dev/v1"
+  }
 }

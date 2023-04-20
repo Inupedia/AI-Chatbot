@@ -19,6 +19,10 @@ class ChatGPT():
         # initialize the current message
         self.current_message = {'role': 'user', 'content': ''}
 
+        if (self.config_data["proxy"]["enabled"]):
+            print(f'Using proxy: {self.config_data["proxy"]["host"]}')
+            openai.api_base = self.config_data["proxy"]["host"]
+
     def add_current_message(self, content: str):
         self.current_message['content'] = content
         self.conversation.append(self.current_message)
