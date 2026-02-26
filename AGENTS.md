@@ -33,3 +33,5 @@ This is an AI Chatbot / AI VTuber application: a Python app supporting **OpenAI 
 - `deep-translator` uses Google Translate under the hood but is a stable, maintained wrapper (replaced the unmaintained `googletrans==4.0.0rc1`).
 - Both providers share `temperature`, `max_tokens`, and `role` from the `chatgpt` config section. The `gemini` section only needs `model` and optionally `api_key`.
 - Gemini uses the modern `google-genai` SDK (not the deprecated `google-generativeai`).
+- Default config uses `provider: "gemini"` with `gemini-2.5-flash`. Gemini free-tier has per-model daily quotas — if one model is exhausted, try another (e.g. `gemini-2.5-flash` when `gemini-2.0-flash` is rate-limited).
+- `GEMINI_API_KEY` and `GOOGLE_API_KEY` are both supported as env var names for Gemini.

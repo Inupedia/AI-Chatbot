@@ -1,6 +1,6 @@
 {
   "chat_mode": "text",
-  "provider": "openai",
+  "provider": "gemini",
   "openai": {
     "api_key": "YOUR_API_KEY"
   },
@@ -15,7 +15,7 @@
   },
   "gemini": {
     "api_key": "YOUR_API_KEY",
-    "model": "gemini-2.0-flash"
+    "model": "gemini-2.5-flash"
   },
   "audio": {
     "device_index": 0,
