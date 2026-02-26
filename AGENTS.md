@@ -3,11 +3,12 @@
 ## Cursor Cloud specific instructions
 
 ### Product Overview
-This is an AI Chatbot / AI VTuber application: a Python app using OpenAI ChatGPT for conversation, Google Translate (via `deep-translator`) for Japanese translation, and Voicevox for Japanese text-to-speech. It supports three modes: `text`, `voice`, and `live` (Bilibili live stream). See `README.md` for full usage details (in Chinese).
+This is an AI Chatbot / AI VTuber application: a Python app supporting **OpenAI (ChatGPT)** and **Google Gemini** as AI backends, with Google Translate (via `deep-translator`) for Japanese translation and Voicevox for Japanese text-to-speech. It supports three modes: `text`, `voice`, and `live` (Bilibili live stream). See `README.md` for full usage details (in Chinese).
 
 ### Running the Application
-- Entry point: `python main.py` (requires Voicevox running and a valid OpenAI API key)
-- Chat mode is configured in `module/config.json` via `chat_mode` (`text`, `voice`, or `live`)
+- Entry point: `python main.py` (requires Voicevox running and a valid AI API key)
+- AI provider is configured in `module/config.json` via `provider` (`openai` or `gemini`)
+- Chat mode is configured via `chat_mode` (`text`, `voice`, or `live`)
 - The app is interactive (reads from stdin in text mode, microphone in voice mode)
 
 ### Required Services
@@ -16,7 +17,9 @@ This is an AI Chatbot / AI VTuber application: a Python app using OpenAI ChatGPT
   sudo docker start voicevox || sudo docker run -d --name voicevox -p 50021:50021 voicevox/voicevox_engine:cpu-ubuntu20.04-latest
   ```
   Wait ~10 seconds for it to become ready. Verify with `curl http://localhost:50021/version`.
-- **OpenAI API Key**: Set via `OPENAI_API_KEY` environment variable (preferred), or in `module/config.json` under `openai.api_key`.
+- **AI API Key** (one of):
+  - OpenAI: `OPENAI_API_KEY` env var or `openai.api_key` in config
+  - Gemini: `GEMINI_API_KEY` env var or `gemini.api_key` in config
 - **Docker daemon**: Required for Voicevox. Start with `sudo dockerd &>/tmp/dockerd.log &` if not already running.
 
 ### System Dependencies (pre-installed in snapshot)
@@ -28,4 +31,5 @@ This is an AI Chatbot / AI VTuber application: a Python app using OpenAI ChatGPT
 - The `keyboard` package requires root privileges for key capture in voice mode.
 - There are no automated tests or linting configuration in this repository.
 - `deep-translator` uses Google Translate under the hood but is a stable, maintained wrapper (replaced the unmaintained `googletrans==4.0.0rc1`).
-- The default model in config is `gpt-4o-mini`; change in `module/config.json` if needed.
+- Both providers share `temperature`, `max_tokens`, and `role` from the `chatgpt` config section. The `gemini` section only needs `model` and optionally `api_key`.
+- Gemini uses the modern `google-genai` SDK (not the deprecated `google-generativeai`).

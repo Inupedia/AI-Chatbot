@@ -2,18 +2,28 @@ import json
 import os
 import queue
 import threading
-from typing import List
+from typing import List, Union
 from pydub import AudioSegment
 from pydub.playback import play
 from module.translator import Translator
 from module.voicevox import Voice
 from module.chatgpt import ChatGPT
+from module.gemini import Gemini
 from module.bilibili import BilibiliLive
+
+ChatSession = Union[ChatGPT, Gemini]
+
+
+def create_session(config_data: dict, username: str) -> ChatSession:
+    provider = config_data.get("provider", "openai")
+    if provider == "gemini":
+        return Gemini(config_data, username=username)
+    return ChatGPT(config_data, username=username)
 
 
 class AIVtuber():
 
-    chatgpt_sessions: List[ChatGPT] = []
+    sessions: List[ChatSession] = []
     audio_recorder = None
 
     def __init__(self):
@@ -23,10 +33,13 @@ class AIVtuber():
         with open(config_file_path, 'r', encoding='utf-8') as f:
             self.config_data = json.load(f)
 
-        self.chatgpt_session = ChatGPT(
+        provider = self.config_data.get("provider", "openai")
+        print(f"Using AI provider: {provider}")
+
+        self.session = create_session(
             self.config_data, username=self.config_data["username"])
 
-        AIVtuber.chatgpt_sessions.append(self.chatgpt_session)
+        AIVtuber.sessions.append(self.session)
 
         self.translator = Translator()
 
@@ -77,8 +90,8 @@ class AIVtuber():
         b_live.start()
 
     def get_result(self, username: str):
-        current_user_session = self.get_session(username)
-        assistant_message = current_user_session.get_response_from_chatgpt()
+        current_session = self.get_session(username)
+        assistant_message = current_session.get_response()
         self.text_to_speech(assistant_message)
         print(f"AI Vtuber: {assistant_message}")
         self.play_audio(self.config_data["voicevox"]["output_filename"])
@@ -90,9 +103,9 @@ class AIVtuber():
                     self.message_queue.get()
             try:
                 username, message = self.message_queue.get()
-                current_user_session = self.get_session(username)
-                current_user_session.add_current_message(message)
-                assistant_message = current_user_session.get_response_from_chatgpt()
+                current_session = self.get_session(username)
+                current_session.add_current_message(message)
+                assistant_message = current_session.get_response()
                 self.text_to_speech(assistant_message)
                 print(f'User: {message}')
                 print(f"AI Vtuber: {assistant_message}")
@@ -104,8 +117,8 @@ class AIVtuber():
     def process_recording(self, username: str):
         content: str = self.speech_to_text(
             self.config_data["audio"]["output_filename"])
-        current_user_session = self.get_session(username)
-        current_user_session.add_current_message(content)
+        current_session = self.get_session(username)
+        current_session.add_current_message(content)
 
     def speech_to_text(self, audio_file: str) -> str:
         try:
@@ -125,10 +138,10 @@ class AIVtuber():
         except Exception as e:
             print(f"Error playing audio: {e}")
 
-    def get_session(self, username: str) -> ChatGPT:
-        for session in AIVtuber.chatgpt_sessions:
+    def get_session(self, username: str) -> ChatSession:
+        for session in AIVtuber.sessions:
             if session.username == username:
                 return session
-        new_session = ChatGPT(self.config_data, username)
-        AIVtuber.chatgpt_sessions.append(new_session)
+        new_session = create_session(self.config_data, username)
+        AIVtuber.sessions.append(new_session)
         return new_session

@@ -1,12 +1,12 @@
 # AI Chatbot
 
-AI Chatbot是一个由OpenAI驱动的聊天软件，它可以通过Voicevox与用户进行语音交互。
+AI Chatbot是一个由AI大语言模型驱动的聊天软件，支持 **OpenAI (ChatGPT)** 和 **Google Gemini** 两种AI后端，通过Voicevox与用户进行语音交互。
 
 ### 要求
 
 - Python 3.8或更高版本及其依赖包
 - Git (可选)
-- OpenAI API密钥
+- OpenAI API密钥 或 Google Gemini API密钥 (二选一)
 - Voicevox引擎
 
 ### 安装
@@ -32,14 +32,22 @@ AI Chatbot是一个由OpenAI驱动的聊天软件，它可以通过Voicevox与�
    3. [Google Colab](https://github.com/SociallyIneptWeeb/LanguageLeapAI/blob/main/src/run_voicevox_colab.ipynb)
 
 ### 使用方法
-1. 设置OpenAI API密钥 (二选一):
-   - **环境变量** (推荐): `export OPENAI_API_KEY="your-key-here"`
-   - **配置文件**: 修改 `module/config.json` 中的 `api_key`
+1. 选择AI后端并设置API密钥:
+   
+   **OpenAI (默认)**:
+   - 修改 `module/config.json` 中 `provider` 为 `"openai"`
+   - 设置密钥: 环境变量 `export OPENAI_API_KEY="your-key"` 或修改配置文件中 `openai.api_key`
+   
+   **Google Gemini**:
+   - 修改 `module/config.json` 中 `provider` 为 `"gemini"`
+   - 设置密钥: 环境变量 `export GEMINI_API_KEY="your-key"` 或修改配置文件中 `gemini.api_key`
+   - Gemini API密钥可在 [Google AI Studio](https://aistudio.google.com/apikey) 免费获取
 
 2. 修改`module/config.json`的信息
-   1. `chat-mode`: `voice`,`text`或者`live`，选择使用语音，文本或直播模式
-   2. `role`: 角色性格塑造，可根据个人喜好自行调教
-   3. `max_tokens`, `temperature`，`top_p`，`frequency_penalty`，`presence_penalty`: OpenAI GPT参数，参考[这里](https://platform.openai.com/docs/api-reference/chat/create)进行调整
+   1. `provider`: `openai` 或 `gemini`，选择AI后端
+   2. `chat_mode`: `voice`,`text`或者`live`，选择使用语音，文本或直播模式
+   3. `role`: 角色性格塑造，可根据个人喜好自行调教
+   4. `max_tokens`, `temperature`，`top_p`，`frequency_penalty`，`presence_penalty`: AI参数调整
    4. `endpoint`: VoiceVox引擎的地址，根据本地运行方式进行调整
    5. `speaker_id`: VoiceVox引擎的ID，可参照[官方声音样品](https://voicevox.hiroshiba.jp/)及对比[对应角色](/speaker.json)进行调整
    6. `username`: 用户名, 仅在`voice`和`text`模式下有效

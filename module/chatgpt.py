@@ -32,7 +32,7 @@ class ChatGPT():
         self.current_message = {'role': 'user', 'content': content}
         self.conversation.append(self.current_message)
 
-    def get_response_from_chatgpt(self) -> str:
+    def get_response(self) -> str:
         try:
             resp = self.client.chat.completions.create(
                 model=self.config_data['chatgpt']['model'],
@@ -49,3 +49,6 @@ class ChatGPT():
             return content
         except Exception as e:
             return f"Error: {e}"
+
+    def get_response_from_chatgpt(self) -> str:
+        return self.get_response()
