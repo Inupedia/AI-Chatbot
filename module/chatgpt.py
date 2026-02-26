@@ -1,4 +1,5 @@
-import openai
+import os
+from openai import OpenAI
 
 
 class ChatGPT():
@@ -9,27 +10,31 @@ class ChatGPT():
         self.config_data = config_data
         self.username = username
 
-        # set up openai api key
-        openai.api_key = self.config_data["openai"]["api_key"]
+        api_key = os.environ.get("OPENAI_API_KEY") or self.config_data["openai"].get("api_key", "")
+        if not api_key or api_key == "YOUR_API_KEY":
+            print("Warning: No valid OpenAI API key found. Set OPENAI_API_KEY environment variable or update module/config.json")
 
-        # initialize the personality of the AI vtuber
+        client_kwargs = {"api_key": api_key}
+
+        if self.config_data["proxy"]["enabled"]:
+            base_url = self.config_data["proxy"]["host"]
+            print(f'Using proxy: {base_url}')
+            client_kwargs["base_url"] = base_url
+
+        self.client = OpenAI(**client_kwargs)
+
         self.conversation.append(
             {'role': 'system', 'content': self.config_data["chatgpt"]["role"]})
 
-        # initialize the current message
         self.current_message = {'role': 'user', 'content': ''}
 
-        if (self.config_data["proxy"]["enabled"]):
-            print(f'Using proxy: {self.config_data["proxy"]["host"]}')
-            openai.api_base = self.config_data["proxy"]["host"]
-
     def add_current_message(self, content: str):
-        self.current_message['content'] = content
+        self.current_message = {'role': 'user', 'content': content}
         self.conversation.append(self.current_message)
 
     def get_response_from_chatgpt(self) -> str:
         try:
-            resp = openai.ChatCompletion.create(
+            resp = self.client.chat.completions.create(
                 model=self.config_data['chatgpt']['model'],
                 messages=self.conversation,
                 max_tokens=self.config_data['chatgpt']['max_tokens'],
@@ -38,9 +43,9 @@ class ChatGPT():
                 frequency_penalty=self.config_data['chatgpt']['frequency_penalty'],
                 presence_penalty=self.config_data['chatgpt']['presence_penalty']
             )
-            content = resp['choices'][0]['message']['content']
+            content = resp.choices[0].message.content
             self.conversation.append(
                 {'role': 'assistant', 'content': content})
             return content
-        except openai.OpenAIError as e:
+        except Exception as e:
             return f"Error: {e}"

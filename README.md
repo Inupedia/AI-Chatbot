@@ -14,28 +14,38 @@ AI Chatbot是一个由OpenAI驱动的聊天软件，它可以通过Voicevox与�
    ```bash
    git clone https://github.com/Inupedia/AI-Chatbot.git
    ```
-2. 安装所需的软件包：
+2. 安装系统依赖 (Ubuntu/Debian):
+   ```bash
+   sudo apt-get install -y portaudio19-dev python3-dev ffmpeg
+   ```
+3. 安装所需的Python包：
    ```bash
    pip install -r requirements.txt 
    ```
 
-3. 下载VoiceVox引擎并运行：
+4. 下载VoiceVox引擎并运行：
    1. [官方软件](https://voicevox.hiroshiba.jp/)
-   2. [Docker镜像](https://hub.docker.com/r/voicevox/voicevox_engine)
+   2. [Docker镜像](https://hub.docker.com/r/voicevox/voicevox_engine) (推荐):
+      ```bash
+      docker run -d --name voicevox -p 50021:50021 voicevox/voicevox_engine:cpu-ubuntu20.04-latest
+      ```
    3. [Google Colab](https://github.com/SociallyIneptWeeb/LanguageLeapAI/blob/main/src/run_voicevox_colab.ipynb)
 
 ### 使用方法
-1. 修改`module/config.json`的信息
+1. 设置OpenAI API密钥 (二选一):
+   - **环境变量** (推荐): `export OPENAI_API_KEY="your-key-here"`
+   - **配置文件**: 修改 `module/config.json` 中的 `api_key`
+
+2. 修改`module/config.json`的信息
    1. `chat-mode`: `voice`,`text`或者`live`，选择使用语音，文本或直播模式
-   2. `api_key`: OpenAI API密钥，可以在[这里](https://beta.openai.com/account/api-keys)获取
-   3. `role`: 角色性格塑造，可根据个人喜好自行调教
-   4. `max_tokens`, `temperature`，`top_p`，`frequency_penalty`，`presence_penalty`: OpenAI GPT-3的参数，参考[这里](https://beta.openai.com/docs/api-reference/completions/create)进行调整
-   5. `endpoint`: VoiceVox引擎的地址，根据本地运行方式进行调整
-   6. `speaker_id`: VoiceVox引擎的ID，可参照[官方声音样品](https://voicevox.hiroshiba.jp/)及对比[对应角色](/speaker.json)进行调整
-   7. `username`: 用户名, 仅在`voice`和`text`模式下有效
-   8. `queue_size`: 能最大存储消息队列大小, 仅在`live`和`text`模式下有效。为保持记录最新，当消息队列达到最大值时，会自动清空早期1/2的消息
-   9. `room_id`: 直播间ID，如`https://live.bilibili.com/123456`中的`123456`
-   10. `proxy`: 免翻墙代理，如需使用代理，请将`proxy`设置为`true`并在`base`中填写代理地址。默认代理地址参考[此处](https://github.com/justjavac/openai-proxy.git)
+   2. `role`: 角色性格塑造，可根据个人喜好自行调教
+   3. `max_tokens`, `temperature`，`top_p`，`frequency_penalty`，`presence_penalty`: OpenAI GPT参数，参考[这里](https://platform.openai.com/docs/api-reference/chat/create)进行调整
+   4. `endpoint`: VoiceVox引擎的地址，根据本地运行方式进行调整
+   5. `speaker_id`: VoiceVox引擎的ID，可参照[官方声音样品](https://voicevox.hiroshiba.jp/)及对比[对应角色](/speaker.json)进行调整
+   6. `username`: 用户名, 仅在`voice`和`text`模式下有效
+   7. `queue_size`: 能最大存储消息队列大小, 仅在`live`和`text`模式下有效。为保持记录最新，当消息队列达到最大值时，会自动清空早期1/2的消息
+   8. `room_id`: 直播间ID，如`https://live.bilibili.com/123456`中的`123456`
+   9. `proxy`: 免翻墙代理，如需使用代理，请将`enabled`设置为`true`并在`host`中填写代理地址
    
 2. 运行程序 (首先运行Voicevox)：
    ```bash
