@@ -1,7 +1,9 @@
-openai
+openai>=1.0.0
+google-genai>=1.0.0
 pyaudio
 pydub
 keyboard
-googletrans==4.0.0rc1
+deep-translator
 bilibili-api-python
 openai-whisper
+requests
